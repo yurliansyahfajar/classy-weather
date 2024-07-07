@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { useWeatherDaily } from "./useWeatherDaily.js";
+import { Weather } from "./Weather.js";
+import { Input } from "./Input.js";
+import { Title } from "./Title.js";
 
-function App() {
+export default function App() {
+  const [location, setLocation] = useState("");
+  const { isLoading, displayLocation, weather } = useWeatherDaily(location);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Title />
+      <Input location={location} setLocation={setLocation} />
+      {isLoading && <p className="loader">Loading...</p>}
+      {weather.weathercode && (
+        <Weather displayLocation={displayLocation} weather={weather} />
+      )}
     </div>
   );
 }
-
-export default App;
